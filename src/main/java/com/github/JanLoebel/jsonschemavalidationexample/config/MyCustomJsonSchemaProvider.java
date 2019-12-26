@@ -1,5 +1,6 @@
 package com.github.JanLoebel.jsonschemavalidationexample.config;
 
+import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
@@ -14,10 +15,12 @@ import java.util.Collection;
 // If you don't want caching for the validation use "DefaultJsonSchemaProvider".
 public class MyCustomJsonSchemaProvider extends CacheableJsonSchemaProvider {
 
-    public MyCustomJsonSchemaProvider() {
+    @Override
+    public JsonSchema loadSchema(String url) {
         // Set base path of the schemas, so it's easier to annotate the e.g.: BookDto with the path.
         // Full path then will be: 'classpath:jsonschema/book.json'
-        super("classpath:jsonschema/");
+        final String fullPath =  "classpath:jsonschema/" + url;
+        return super.loadSchema(fullPath);
     }
 
     @Override
